@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/logo"
+                android:id="@+id/Register_image"
+                android:layout_marginTop="50dp"
+
+               />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Register_email"
+                android:layout_below="@+id/Register_image"
+                android:padding="4dp"
+
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:layout_alignParentStart="true"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/input"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Register_password"
+                android:layout_below="@+id/Register_email"
+                android:padding="4dp"
+
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:layout_alignParentStart="true"
+                android:hint="Password"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/input"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Register_password"
+                android:id="@+id/Register_btn"
+                android:textAllCaps="false"
+                android:textColor="@android:color/background_light"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:textSize="24sp"
+                android:padding="14dp"
+                android:text="Sign Up"
+                android:layout_centerHorizontal="true"
+
+                android:background="@drawable/button"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Alreagy_Have_Account"
+                android:layout_below="@+id/Register_btn"
+                android:layout_marginTop="30dp"
+
+                android:text="Already Have An Account?"
+                android:textAlignment="center"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentStart="true"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Alreagy_Have_Account"
+
+                android:id="@+id/Login_At_Register_btn"
+                android:textAllCaps="false"
+                android:padding="14dp"
+               android:text="Sign In"
+                android:layout_centerHorizontal="true"
+                android:textColor="@android:color/background_light"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:textSize="24sp"
+
+
+                android:background="@drawable/button"/>
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>
