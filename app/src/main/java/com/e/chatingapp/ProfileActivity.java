@@ -92,7 +92,7 @@ receiverUserID="";
                {String userImage=dataSnapshot.child("imageuri").getValue().toString();
                 String userName=dataSnapshot.child("name").getValue().toString();
                 String userStatus=dataSnapshot.child("status").getValue().toString();
-               Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(userProfileImage);
+               Picasso.get().load(userImage).placeholder(R.drawable.profile).into(userProfileImage);
               userProfileName.setText(userName);
               userProfileStatus.setText(userStatus);
                    ManageChatRequest();

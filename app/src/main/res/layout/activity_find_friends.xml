@@ -43,7 +43,7 @@ android:hint="Enter peuID"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
-        android:textSize="24sp"
+        android:textSize="22dp"
         android:textColor="@android:color/background_light"
         android:background="@drawable/button"/>
 

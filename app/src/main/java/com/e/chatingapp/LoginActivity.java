@@ -21,6 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     private Button LoginButton;
@@ -28,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView NeedNewAccount,ForgetPasswordLink;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
+    private String deviceToken;
     private DatabaseReference UsersRef;
 
     @Override
@@ -79,7 +83,9 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful())
                 {
                     String currentUserId = mAuth.getCurrentUser().getUid();
-                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+
+                    deviceToken = FirebaseInstanceId.getInstance().getToken();
 
                     UsersRef.child(currentUserId).child("device_token")
                             .setValue(deviceToken)
@@ -89,6 +95,10 @@ public class LoginActivity extends AppCompatActivity {
                                 {
                                     if (task.isSuccessful())
                                     {
+
+
+
+
                                         sendToMainActivity();
                                         Toast.makeText(LoginActivity.this, "Logged in Successful...", Toast.LENGTH_SHORT).show();
                                         loadingBar.dismiss();
@@ -119,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendToMainActivity() {
         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+        intent.putExtra("device_token", deviceToken);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

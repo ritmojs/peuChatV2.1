@@ -36,6 +36,7 @@ public class ChatsFagment extends Fragment {
     private DatabaseReference ChatsRef, UsersRef;
     private FirebaseAuth mAuth;
     private String currentUserID="";
+    private String deviceToken;
 
 
     public ChatsFagment() {
@@ -88,6 +89,12 @@ public class ChatsFagment extends Fragment {
                             {
                                 if (dataSnapshot.exists())
                                 {
+
+                                    if(dataSnapshot.hasChild("device_token"))
+                                    {
+                                        deviceToken=dataSnapshot.child("device_token").getValue().toString();
+                                    }
+
                                     if (dataSnapshot.hasChild("imageuri"))
                                     {
                                         retImage[0] = dataSnapshot.child("imageuri").getValue().toString();
@@ -128,6 +135,7 @@ public class ChatsFagment extends Fragment {
                                             chatIntent.putExtra("visit_user_id", usersIDs);
                                             chatIntent.putExtra("visit_user_name", retName);
                                             chatIntent.putExtra("visit_image", retImage[0]);
+                                            chatIntent.putExtra("device_token",deviceToken);
                                             startActivity(chatIntent);
                                         }
                                     });

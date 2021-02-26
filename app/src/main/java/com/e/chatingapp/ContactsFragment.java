@@ -117,7 +117,7 @@ public class ContactsFragment extends Fragment {
                                 holder.userName.setText(profileName);
                                 holder.userStatus.setText(profileStatus);
 
-                              Picasso.get().load(userImage).into(holder.profileImage);
+                             // Picasso.get().load(userImage).into(holder.profileImage);
                             }
                             else
                             {

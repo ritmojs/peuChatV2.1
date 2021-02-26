@@ -30,7 +30,7 @@
         android:layout_marginTop="110dp"
 
         android:id="@+id/visit_profile_image"
-        android:src="@drawable/profile_image"/>
+        android:src="@drawable/profile"/>
 
     <TextView
         android:layout_width="match_parent"

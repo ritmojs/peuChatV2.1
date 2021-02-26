@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -26,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +37,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -55,8 +59,7 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
     private RecyclerView userMessagesList;
-
-
+    private String token;
     private String saveCurrentTime, saveCurrentDate;
 
     @Override
@@ -71,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         messageReceiverID = getIntent().getExtras().get("visit_user_id").toString();
         messageReceiverName = getIntent().getExtras().get("visit_user_name").toString();
         messageReceiverImage = getIntent().getExtras().get("visit_image").toString();
+
 
 
         IntializeControllers();
@@ -141,6 +145,11 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)
                     {
+
+                        if(dataSnapshot.hasChild("device_token"))
+                        {
+                            token=dataSnapshot.child("device_token").getValue().toString();
+                        }
                         if (dataSnapshot.child("userState").hasChild("state"))
                         {
                             String state = dataSnapshot.child("userState").child("state").getValue().toString();
@@ -217,7 +226,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void SendMessage()
     {
-        String messageText = MessageInputText.getText().toString();
+        final String messageText = MessageInputText.getText().toString();
 
         if (TextUtils.isEmpty(messageText))
         {
@@ -252,6 +261,16 @@ public class ChatActivity extends AppCompatActivity {
                 {
                     if (task.isSuccessful())
                     {
+                        Log.d("Tooken","token"+token);
+
+                        FcmNotificationsSender notificationsSender=new FcmNotificationsSender(token,userName.getText().toString(),messageText,getApplicationContext(),ChatActivity.this);
+                        notificationsSender.SendNotifications();
+
+
+
+
+
+
                         Toast.makeText(ChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
                     }
                     else

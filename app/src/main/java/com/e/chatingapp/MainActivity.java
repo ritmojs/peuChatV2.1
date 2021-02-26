@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         RootRef = FirebaseDatabase.getInstance().getReference();
         mtoolbar = (Toolbar) findViewById(R.id.app_bar_page);
         setSupportActionBar(mtoolbar);
-        getSupportActionBar().setTitle("puechat");
+        getSupportActionBar().setTitle("peuchat");
         mViewPager = findViewById(R.id.pager);
         mTabAccessAdaptor = new TabAccessAdaptor(getSupportFragmentManager(), 0);
         mViewPager.setAdapter(mTabAccessAdaptor);
