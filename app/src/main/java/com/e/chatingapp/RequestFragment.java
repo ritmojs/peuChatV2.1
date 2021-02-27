@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,6 +130,7 @@ public class RequestFragment extends Fragment {
                                                     @Override
                                                     public void onClick(View view)
                                                     {
+                                                        Log.d("REQUEST","CLICKED");
                                                         CharSequence options[] = new CharSequence[]
                                                                 {
                                                                         "Accept",
@@ -144,6 +146,7 @@ public class RequestFragment extends Fragment {
                                                             {
                                                                 if (i == 0)
                                                                 {
+
                                                                     ContactsRef.child(currentUserID).child(list_user_id).child("Contact")
                                                                             .setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
@@ -244,6 +247,7 @@ public class RequestFragment extends Fragment {
                                                     final String requestProfileImage = dataSnapshot.child("image").getValue().toString();
 
                                                    // Picasso.get().load(requestProfileImage).into(holder.profileImage);
+                                                    Picasso.get().load(requestProfileImage).into(holder.profileImage);
                                                 }
 
                                                 final String requestUserName = dataSnapshot.child("name").getValue().toString();

@@ -71,7 +71,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         Intent myIntent = getIntent();
-        peuID = myIntent.getStringExtra("peuID");
+
         deviceToken=myIntent.getStringExtra("device_token");
         mAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -179,7 +179,6 @@ public class SettingActivity extends AppCompatActivity {
 
 
             Rootref.child("Users").child(currentUserID).child("uid").setValue(currentUserID);
-            Rootref.child("Users").child(currentUserID).child("peuID").setValue(peuID);
             Rootref.child("Users").child(currentUserID).child("device_token").setValue(deviceToken);
             Rootref.child("Users").child(currentUserID).child("status").setValue(setStatus);
             Rootref.child("Users").child(currentUserID).child("name").setValue(setUserName).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -228,25 +227,28 @@ public class SettingActivity extends AppCompatActivity {
     {Rootref.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")&& dataSnapshot.hasChild("status")))
+
+            if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")&& dataSnapshot.hasChild("status")&& dataSnapshot.hasChild("imageuri")))
             {String imageuri=dataSnapshot.child("imageuri").getValue().toString();
                 Picasso.get().load(imageuri).into(userProfileImage);
-               String retrivename=dataSnapshot.child("name").getValue().toString();
-               String retrivestatus=dataSnapshot.child("status").getValue().toString();
-              String retrivepueId=dataSnapshot.child("peuID").getValue().toString();
-               userName.setText(retrivename);
-               userStatus.setText(retrivestatus);
-              mpeuID.setText(retrivepueId);
-            }
-            if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")&& dataSnapshot.hasChild("status")&& dataSnapshot.hasChild("imageuri")))
-            {
+                String retrivename=dataSnapshot.child("name").getValue().toString();
+                String retrivestatus=dataSnapshot.child("status").getValue().toString();
+                String retrivepueId=dataSnapshot.child("peuID").getValue().toString();
+                userName.setText(retrivename);
+                userStatus.setText(retrivestatus);
+                mpeuID.setText(retrivepueId);
 
             }
-            else
+            if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")&& dataSnapshot.hasChild("status") && !dataSnapshot.hasChild("imageuri")))
             {
-                Toast.makeText(SettingActivity.this, "Update Your Profile..", Toast.LENGTH_SHORT).show();
-
+                String retrivename=dataSnapshot.child("name").getValue().toString();
+                String retrivestatus=dataSnapshot.child("status").getValue().toString();
+                String retrivepueId=dataSnapshot.child("peuID").getValue().toString();
+                userName.setText(retrivename);
+                userStatus.setText(retrivestatus);
+                mpeuID.setText(retrivepueId);
             }
+
 
         }
 

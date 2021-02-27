@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
@@ -53,24 +57,56 @@ public class LoginActivity extends AppCompatActivity {
                 AllowUserToLoginIN();
             }
         });
-        if(mAuth.getCurrentUser()!=null)
-        {sendToMainActivity();
 
-        }
 
     }
 
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+
+        if(mAuth.getCurrentUser()!=null){
+            boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+            Log.d("EMAIL",""+emailVerified);
+            if(emailVerified==true) {
+
+                finish();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(this, "Verify Your Email First", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     private void AllowUserToLoginIN() {
         String email=UserEmail.getText().toString();
         String password=UserPassword.getText().toString();
-        if(TextUtils.isEmpty(email))
-        {
-            Toast.makeText(this, "Please enter email....", Toast.LENGTH_SHORT).show();
+        if(email.isEmpty()){
+            UserEmail.setError("Email is required");
+            UserEmail.requestFocus();
+            return;
         }
-        if(TextUtils.isEmpty(password))
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
         {
-            Toast.makeText(this, "Please enter password....", Toast.LENGTH_SHORT).show();
+            UserEmail.setError("Please enter a valid email");
+            UserEmail.requestFocus();
+            return;
+        }
+        if(password.isEmpty()){
+            UserPassword.setError("Password is required");
+            UserPassword.requestFocus();
+            return;
+        }
+        if(password.length()<6)
+        {
+            UserPassword.setError("Minimum length of password is 6");
+            UserPassword.requestFocus();
+            return;
         }
         else
         {loadingBar.setTitle("Sign In");
@@ -82,34 +118,69 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
                 {
-                    String currentUserId = mAuth.getCurrentUser().getUid();
+
+                    boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+                    if(emailVerified==true) {
 
 
-                    deviceToken = FirebaseInstanceId.getInstance().getToken();
+                        String currentUserId = mAuth.getCurrentUser().getUid();
 
-                    UsersRef.child(currentUserId).child("device_token")
-                            .setValue(deviceToken)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    if (task.isSuccessful())
+
+                        deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                        UsersRef.child(currentUserId).child("device_token")
+                                .setValue(deviceToken)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task)
                                     {
+                                        if (task.isSuccessful())
+                                        {String currentUserID=mAuth.getCurrentUser().getUid();
+                                            Calendar calendar = Calendar.getInstance();
+                                            DatabaseReference RootRef= FirebaseDatabase.getInstance().getReference();
+
+                                            SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+                                            String saveCurrentDate = currentDate.format(calendar.getTime());
+
+                                            SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+                                            String saveCurrentTime = currentTime.format(calendar.getTime());
+                                            RootRef.child("Users").child(currentUserID).child("userState").child("state").setValue("online");
+                                            RootRef.child("Users").child(currentUserID).child("userState").child("date").setValue(saveCurrentDate);
+                                            RootRef.child("Users").child(currentUserID).child("userState").child("time").setValue(saveCurrentTime);
+                                            finish();
+                                            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                            startActivity(intent);
 
 
 
-
-                                        sendToMainActivity();
-                                        Toast.makeText(LoginActivity.this, "Logged in Successful...", Toast.LENGTH_SHORT).show();
-                                        loadingBar.dismiss();
+                                            loadingBar.dismiss();
+                                        }
                                     }
-                                }
-                            });
+                                });
+
+
+
+
+
+
+                    }
+                    else
+                    {
+                        Toast.makeText(LoginActivity.this, "Email Not Verified. Verification link Sent..", Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
+
+                    }
+
+
+
+
+
                 }
                 else
                 {
-                    String message = task.getException().toString();
-                    Toast.makeText(LoginActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
+
+                    String message = task.getException().getMessage();
+                    Toast.makeText(LoginActivity.this, ""+ message, Toast.LENGTH_SHORT).show();
                     loadingBar.dismiss();
                 }
             }

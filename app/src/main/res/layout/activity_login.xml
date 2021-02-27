@@ -14,13 +14,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-          <ImageView
-              android:layout_width="100dp"
-              android:layout_height="100dp"
-              android:background="@drawable/logo"
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
              android:layout_centerHorizontal="true"
               android:id="@+id/login_image"
               android:layout_marginTop="50dp"
+              android:text="Login"
+              android:textColor="@color/text"
+              android:textSize="30dp"
+              android:textStyle="bold"
               android:layout_alignParentTop="true"
              />
           <EditText
@@ -28,7 +31,7 @@
               android:layout_height="wrap_content"
               android:id="@+id/login_email"
               android:layout_below="@+id/login_image"
-              android:padding="4dp"
+              android:padding="15dp"
 
               android:layout_marginTop="25dp"
               android:layout_marginLeft="17dp"
@@ -42,7 +45,7 @@
               android:layout_height="wrap_content"
               android:id="@+id/login_password"
               android:layout_below="@+id/login_email"
-              android:padding="4dp"
+              android:padding="15dp"
 
               android:layout_marginTop="15dp"
               android:layout_marginLeft="17dp"
@@ -59,7 +62,7 @@
               android:layout_marginTop="2dp"
               android:layout_marginLeft="15dp"
               android:layout_marginRight="23dp"
-              android:text="Forgot Password"
+              android:text="Forgot Password?"
               android:textAlignment="textEnd"
               android:textSize="17sp"
               android:textStyle="bold"
@@ -75,9 +78,9 @@
               android:id="@+id/login_btn"
             android:layout_centerHorizontal="true"
               android:text="SignIn"
-              android:textSize="24sp"
+              android:textSize="18dp"
               android:textAllCaps="false"
-              android:padding="14dp"
+              android:padding="12dp"
               android:textColor="@android:color/background_light"
               android:layout_marginTop="40dp"
               android:layout_marginLeft="17dp"
@@ -86,7 +89,7 @@
 
 
 
-              android:background="@drawable/button"/>
+              android:background="@drawable/register"/>
           <TextView
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

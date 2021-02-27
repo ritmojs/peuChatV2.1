@@ -2,6 +2,7 @@ package com.e.chatingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
                     sleep(2000);
 
                     //Call Main activity
-                    Intent i=new Intent(SplashActivity.this,LoginActivity.class);
+                    Intent i=new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(i);
 
                     //destroying Splash activity

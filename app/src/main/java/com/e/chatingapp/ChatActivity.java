@@ -98,7 +98,6 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-
     private void IntializeControllers()
     {
         ChatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
@@ -145,6 +144,12 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)
                     {
+                        if (dataSnapshot.hasChild("imageuri"))
+                        {
+                            Log.d("IMAGEURI",dataSnapshot.child("imageuri").getValue().toString());
+                            String userImage1 = dataSnapshot.child("imageuri").getValue().toString();
+                            Picasso.get().load(userImage1).placeholder(R.drawable.profile).into(userImage);
+                        }
 
                         if(dataSnapshot.hasChild("device_token"))
                         {
@@ -183,7 +188,17 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onStart()
-    {
+    {Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        String saveCurrentTime = currentTime.format(calendar.getTime());
+        String currentUserID=mAuth.getCurrentUser().getUid();
+        RootRef.child("Users").child(currentUserID).child("userState").child("state").setValue("online");
+        RootRef.child("Users").child(currentUserID).child("userState").child("date").setValue(saveCurrentDate);
+        RootRef.child("Users").child(currentUserID).child("userState").child("time").setValue(saveCurrentTime);
         super.onStart();
 
         RootRef.child("Messages").child(messageSenderID).child(messageReceiverID)

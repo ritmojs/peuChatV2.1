@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -97,6 +101,7 @@ public class ChatsFagment extends Fragment {
 
                                     if (dataSnapshot.hasChild("imageuri"))
                                     {
+                                        Log.d("IMAGEURI",dataSnapshot.child("imageuri").getValue().toString());
                                         retImage[0] = dataSnapshot.child("imageuri").getValue().toString();
                                        Picasso.get().load(retImage[0]).into(holder.profileImage);
                                     }

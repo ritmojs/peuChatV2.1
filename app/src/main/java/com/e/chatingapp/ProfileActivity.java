@@ -27,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
     private  String receiverUserID,Current_State,senderUserID;
-    private TextView userProfileName,userProfileStatus;
+    private TextView userProfileName,userProfileStatus,userpeuID;
     private CircleImageView userProfileImage;
     private Button sendMessageRequestButton,declineMessageRequestButton;
     private DatabaseReference RootRef,ChatRequestRef,ContactRef,NotificationRef,peuRef;
@@ -42,8 +42,9 @@ public class ProfileActivity extends AppCompatActivity {
         senderUserID=mAuth.getCurrentUser().getUid();
        //receiverUserID=getIntent().getStringExtra("visit_user_id");
         peuID=getIntent().getStringExtra("peuID");
-
-receiverUserID="";
+        receiverUserID="";
+        userpeuID=findViewById(R.id.visit_user_peuID);
+        userpeuID.setText(peuID);
 
         userProfileImage=findViewById(R.id.visit_profile_image);
         userProfileName=findViewById(R.id.visit_user_name);
@@ -88,14 +89,25 @@ receiverUserID="";
        RootRef.child(receiverUserID).addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               if((dataSnapshot.exists()))
+               if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")&& dataSnapshot.hasChild("status")&& dataSnapshot.hasChild("imageuri")))
                {String userImage=dataSnapshot.child("imageuri").getValue().toString();
                 String userName=dataSnapshot.child("name").getValue().toString();
                 String userStatus=dataSnapshot.child("status").getValue().toString();
+                String userID=dataSnapshot.child("peuID").getValue().toString();
                Picasso.get().load(userImage).placeholder(R.drawable.profile).into(userProfileImage);
               userProfileName.setText(userName);
               userProfileStatus.setText(userStatus);
                    ManageChatRequest();
+               }
+               if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")&& dataSnapshot.hasChild("status") && !dataSnapshot.hasChild("imageuri")))
+               {
+                   String userName=dataSnapshot.child("name").getValue().toString();
+                   String userStatus=dataSnapshot.child("status").getValue().toString();
+                   String userID=dataSnapshot.child("peuID").getValue().toString();
+                   userProfileName.setText(userName);
+                   userProfileStatus.setText(userStatus);
+                   ManageChatRequest();
+
                }
            }
 

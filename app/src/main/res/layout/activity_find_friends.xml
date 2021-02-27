@@ -21,9 +21,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/enter_peuID"
 
-        android:padding="4dp"
+        android:padding="16dp"
+        android:textSize="20dp"
         android:layout_below="@+id/heading"
-android:hint="Enter peuID"
+        android:hint="Enter peuID"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
@@ -39,12 +40,12 @@ android:hint="Enter peuID"
         android:text="Search"
         android:id="@+id/search"
         android:textAllCaps="false"
-        android:padding="14dp"
+        android:padding="16dp"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
-        android:textSize="22dp"
+        android:textSize="20dp"
         android:textColor="@android:color/background_light"
-        android:background="@drawable/button"/>
+        android:background="@drawable/register"/>
 
 </RelativeLayout>

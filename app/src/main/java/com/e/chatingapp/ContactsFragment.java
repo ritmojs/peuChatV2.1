@@ -1,5 +1,6 @@
 package com.e.chatingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ContactsFragment extends Fragment {
     private View ContactsView;
     private RecyclerView myContactsList;
-
+    private String peuID;
     private DatabaseReference ContacsRef, UsersRef;
     private FirebaseAuth mAuth;
     private String currentUserID;
@@ -110,23 +111,40 @@ public class ContactsFragment extends Fragment {
 
                             if (dataSnapshot.hasChild("imageuri"))
                             {
-                               String userImage = dataSnapshot.child("imageuri").getValue().toString();
+                              final String userImage = dataSnapshot.child("imageuri").getValue().toString();
                                 String profileName = dataSnapshot.child("name").getValue().toString();
                                 String profileStatus = dataSnapshot.child("status").getValue().toString();
+                                String item_peu=dataSnapshot.child("peuID").getValue().toString();
+                                holder.peu.setText(item_peu);
+
 
                                 holder.userName.setText(profileName);
                                 holder.userStatus.setText(profileStatus);
 
-                             // Picasso.get().load(userImage).into(holder.profileImage);
+                              Picasso.get().load(userImage).into(holder.profileImage);
                             }
                             else
                             {
                                 String profileName = dataSnapshot.child("name").getValue().toString();
                                 String profileStatus = dataSnapshot.child("status").getValue().toString();
-
+                                String item_peu=dataSnapshot.child("peuID").getValue().toString();
+                                holder.peu.setText(item_peu);
                                 holder.userName.setText(profileName);
                                 holder.userStatus.setText(profileStatus);
                             }
+
+
+
+                            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view)
+                                {
+                                    Intent chatIntent = new Intent(getContext(), ProfileActivity.class);
+
+                                    chatIntent.putExtra("peuID",peuID);
+                                    startActivity(chatIntent);
+                                }
+                            });
                         }
                     }
 
@@ -159,15 +177,16 @@ public class ContactsFragment extends Fragment {
         TextView userName, userStatus;
         CircleImageView profileImage;
         ImageView onlineIcon;
+        TextView peu;
 
 
         public ContactsViewHolder(@NonNull View itemView)
         {
             super(itemView);
-
+            peu=itemView.findViewById(R.id.item_peuID);
             userName = itemView.findViewById(R.id.user_profile_name);
             userStatus = itemView.findViewById(R.id.user_profile_status);
-           // profileImage = itemView.findViewById(R.id.users_profile_image);
+            profileImage = itemView.findViewById(R.id.user_profile_image);
             onlineIcon = (ImageView) itemView.findViewById(R.id.user_online_status);
         }
     }

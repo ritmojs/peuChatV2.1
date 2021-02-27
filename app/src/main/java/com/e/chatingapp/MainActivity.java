@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -26,6 +27,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar mtoolbar;
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("peuchat");
         mViewPager = findViewById(R.id.pager);
         mTabAccessAdaptor = new TabAccessAdaptor(getSupportFragmentManager(), 0);
-        mViewPager.setAdapter(mTabAccessAdaptor);
+        mViewPager.setAdapter(mTabAccessAdaptor); 
         mTabLayout = findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
         mAuth = FirebaseAuth.getInstance();
@@ -55,19 +60,61 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=getIntent();
         peuID=intent.getStringExtra("peuID");
         deviceToken=intent.getStringExtra("device_token");
+
     }
 
     protected void onStart() {
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        String saveCurrentTime = currentTime.format(calendar.getTime());
+        String currentUserID=mAuth.getCurrentUser().getUid();
+        RootRef.child("Users").child(currentUserID).child("userState").child("state").setValue("online");
+        RootRef.child("Users").child(currentUserID).child("userState").child("date").setValue(saveCurrentDate);
+        RootRef.child("Users").child(currentUserID).child("userState").child("time").setValue(saveCurrentTime);
         super.onStart();
+
         if (currentUser == null) {
+
+
             sendUserToLoginActivity();
         }
         else
-        {verifyUserExistance();
+        {
+
+                verifyUserExistance();
+
+
+
+
+
 
         }
 
     }
+
+
+
+    @Override
+    protected void onDestroy() {
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        String saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        String saveCurrentTime = currentTime.format(calendar.getTime());
+        String currentUserID=mAuth.getCurrentUser().getUid();
+        RootRef.child("Users").child(currentUserID).child("userState").child("state").setValue("offline");
+        RootRef.child("Users").child(currentUserID).child("userState").child("date").setValue(saveCurrentDate);
+        RootRef.child("Users").child(currentUserID).child("userState").child("time").setValue(saveCurrentTime);
+        super.onDestroy();
+    }
+
+
 
     private void verifyUserExistance() {
         String currentUserID=mAuth.getCurrentUser().getUid();
@@ -79,7 +126,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else
-                {  sendUserToSettingActivity();
+                {
+                    sendUserToSettingActivity();
 
                   }
 
@@ -95,7 +143,9 @@ public class MainActivity extends AppCompatActivity {
     private void sendUserToSettingActivity() {
         Intent intent=new Intent(MainActivity.this,SettingActivity.class);
        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         intent.putExtra("peuID", peuID);
+
         intent.putExtra("device_token", deviceToken);
         startActivity(intent);
 
