@@ -23,7 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.installations.InstallationTokenResult;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ProgressBar LoadingBar;
     private DatabaseReference RootRef;
     private String mpeuID;
-    private String deviceToken;
+    private String deviceToken=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         mAuth=FirebaseAuth.getInstance();
+
         RootRef= FirebaseDatabase.getInstance().getReference();
 
 
@@ -70,8 +72,11 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
         CreateAccoutnt.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
+
                 CreateNewAccoutn();
             }
         });
@@ -111,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
                 if(task.isSuccessful())
                 {
                     //Profile Build for FirebaseAuths.
@@ -118,7 +124,6 @@ public class RegisterActivity extends AppCompatActivity {
                         .setDisplayName("peuChater")
                         .build();
                     mAuth.getCurrentUser().updateProfile(profileUpdates);
-
 
                     //Toast Email Register
                     Toast.makeText(RegisterActivity.this, "Email Register Successful", Toast.LENGTH_SHORT).show();
@@ -133,7 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if(task.isSuccessful())
                             {
 
-                                deviceToken = FirebaseInstanceId.getInstance().getToken();
+
                                 String currentUserID=mAuth.getCurrentUser().getUid();
 
                                 RootRef.child("Passwword").child(currentUserID).setValue(password);
@@ -148,7 +153,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 //End Of Online Status Code
 
                                 //Updating DataBase With Details
-                                RootRef.child("Users").child(currentUserID).child("device_token").setValue(deviceToken);
                                 RootRef.child("Users").child(currentUserID).child("peuID").setValue(mpeuID);
                                 RootRef.child("Users").child(currentUserID).child("userState").child("state").setValue("online");
                                 RootRef.child("Users").child(currentUserID).child("userState").child("date").setValue(saveCurrentDate);
@@ -170,6 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else
                 {
+
                     String message=task.getException().getMessage();
                     Toast.makeText(RegisterActivity.this, ""+message, Toast.LENGTH_SHORT).show();
                 }

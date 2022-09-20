@@ -114,8 +114,6 @@ public class ContactsFragment extends Fragment {
                               final String userImage = dataSnapshot.child("imageuri").getValue().toString();
                                 String profileName = dataSnapshot.child("name").getValue().toString();
                                 String profileStatus = dataSnapshot.child("status").getValue().toString();
-                                String item_peu=dataSnapshot.child("peuID").getValue().toString();
-                                holder.peu.setText(item_peu);
 
 
                                 holder.userName.setText(profileName);
@@ -127,31 +125,23 @@ public class ContactsFragment extends Fragment {
                             {
                                 String profileName = dataSnapshot.child("name").getValue().toString();
                                 String profileStatus = dataSnapshot.child("status").getValue().toString();
-                                String item_peu=dataSnapshot.child("peuID").getValue().toString();
-                                holder.peu.setText(item_peu);
+
                                 holder.userName.setText(profileName);
                                 holder.userStatus.setText(profileStatus);
                             }
 
 
 
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view)
-                                {
-                                    Intent chatIntent = new Intent(getContext(), ProfileActivity.class);
 
-                                    chatIntent.putExtra("peuID",peuID);
-                                    startActivity(chatIntent);
-                                }
-                            });
                         }
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
+
+
                 });
             }
 
@@ -177,13 +167,11 @@ public class ContactsFragment extends Fragment {
         TextView userName, userStatus;
         CircleImageView profileImage;
         ImageView onlineIcon;
-        TextView peu;
 
 
         public ContactsViewHolder(@NonNull View itemView)
         {
             super(itemView);
-            peu=itemView.findViewById(R.id.item_peuID);
             userName = itemView.findViewById(R.id.user_profile_name);
             userStatus = itemView.findViewById(R.id.user_profile_status);
             profileImage = itemView.findViewById(R.id.user_profile_image);

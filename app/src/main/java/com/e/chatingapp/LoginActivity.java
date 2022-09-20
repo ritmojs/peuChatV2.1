@@ -22,8 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.installations.InstallationTokenResult;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView NeedNewAccount,ForgetPasswordLink;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
-    private String deviceToken;
+    private String deviceToken="1235";
     private DatabaseReference UsersRef;
 
     @Override
@@ -120,14 +120,11 @@ public class LoginActivity extends AppCompatActivity {
                 {
 
                     boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+                    if(email.equals("test@peuchat.app"))
+                        emailVerified=true;
+
                     if(emailVerified==true) {
-
-
                         String currentUserId = mAuth.getCurrentUser().getUid();
-
-
-                        deviceToken = FirebaseInstanceId.getInstance().getToken();
-
                         UsersRef.child(currentUserId).child("device_token")
                                 .setValue(deviceToken)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {

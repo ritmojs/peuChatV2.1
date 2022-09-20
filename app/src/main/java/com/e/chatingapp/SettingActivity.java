@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -77,7 +78,7 @@ public class SettingActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         InitializeFiels();
         RetriveUserInfo();
-
+        FirebaseCrashlytics.getInstance().log("HELLO");
 
 
 // Load the image using Glide
